@@ -1,16 +1,31 @@
 class Solution {
 public:
+    bool isEqual(vector<int>&a,vector<int>&b){
+        for(int i=0;i<26;i++){
+            if(a[i]!=b[i])return false;
+        }
+        return true;
+    }
     bool checkInclusion(string s1, string s2) {
-        unordered_map<char,int>mp1,mp2;
-        if(s1.size()>s2.size())return false;
-        for(auto x:s1)mp1[x]++;
-        for(int i=0;i<s1.size();i++)mp2[s2[i]]++;
-        if(mp1==mp2)return true;
-        for(int i=1,j=s1.size();j<s2.size();i++,j++){
-            mp2[s2[i-1]]--;
-            if(mp2[s2[i-1]]==0)mp2.erase(s2[i-1]);
-            mp2[s2[j]]++;
-            if(mp1==mp2)return true;
+        int n=s1.size(),m=s2.size();
+        if(n>m)return false;
+        vector<int>a(26,0),b(26,0);
+        for(int i=0;i<n;i++){
+            a[s1[i]-'a']++;
+        }
+        int i=0,j=0;
+        while(j<n)b[s2[j++]-'a']++;
+        for(int i=0;i<26;i++)cout<<a[i]<<" ";
+        cout<<endl;
+        for(int i=0;i<26;i++)cout<<b[i]<<" ";
+        cout<<endl;
+        cout<<endl;
+        if(isEqual(a,b))return true;
+        while(j<m){
+            b[s2[j]-'a']++;
+            b[s2[i]-'a']--;
+            if(isEqual(a,b))return true;
+            i++,j++;
         }
         return false;
     }
